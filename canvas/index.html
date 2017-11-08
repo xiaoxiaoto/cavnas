@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+<body>
+
+<canvas id="canvasBackground"></canvas>
+<canvas id="canvasForeground"></canvas>
+<script>
+    function draw(originX, originY, width, height) {
+        var canvasBackground = document.getElementById("canvasBackground");//获取背景层canvas对象
+        var canvasForeground = document.getElementById("canvasForeground");//获取操作层canvas对象
+
+        var canvascss = "position:absolute;left:" + originX + 'px;top:' + originY + 'px;';//设置canvas位置
+        canvasBackground.style.cssText = canvascss;
+        canvasForeground.style.cssText = canvascss;
+
+        canvasBackground.width = width;//设置canvas对象宽
+        canvasBackground.height = height;//设置canvas对象高
+
+        canvasForeground.width = width;	//设置canvas对象宽
+        canvasForeground.height = height;//设置canvas对象高
+
+
+        if (canvasBackground.getContext) {//设置背景
+            var ctxBackground = canvasBackground.getContext("2d");
+            //获取canvas对象上下文
+            var img = new Image();//创建需加载的图片
+            img.src = "img/1.jpg";//设置图片路径
+            img.onload = function() {
+                ctxBackground.drawImage(img, 0, 0);//画图片
+            }
+        }
+
+        if (canvasForeground.getContext) {//设置背景
+            var ctxForeground = canvasForeground.getContext("2d");
+
+            window.setInterval(function(){
+                drawBusinessText(ctxForeground,width,height);
+            }, 3000);
+        }
+    }
+
+    function drawText(context, x, y, text) {
+        context.fillText(text, x, y);
+    }
+    function drawBusinessText(ctx,width,height){
+        ctx.clearRect(0, 0, width, height);
+        var data={
+            onePumpPressure :Math.ceil(Math.random()*35),
+            onePumpPressureState :false,
+            onePumpTemperature:Math.ceil(Math.random()*35),
+            onePumpTemperatureState :true,
+            onePumpFlow:Math.ceil(Math.random()*35),
+            onePumpFlowState :false,
+            twoPumpPressure :Math.ceil(Math.random()*35),
+            twoPumpPressureState :true,
+            twoPumpTemperature:Math.ceil(Math.random()*35),
+            twoPumpTemperatureState :true,
+            twoPumpFlow:Math.ceil(Math.random()*35),
+            twoPumpFlowState :false,
+            oneBackPressure :Math.ceil(Math.random()*35),
+            oneBackPressureState :true,
+            oneBackTemperature:Math.ceil(Math.random()*35),
+            oneBackTemperatureState :true,
+            oneBackFlow:Math.ceil(Math.random()*35),
+            oneBackFlowState :false,
+            twoBackPressure :Math.ceil(Math.random()*35),
+            twoBackPressureState :true,
+            twoBackTemperature:Math.ceil(Math.random()*35),
+            twoBackTemperatureState :true,
+            twoBackFlow:Math.ceil(Math.random()*35),
+            woBackFlowState :true,
+        };
+
+        ctx.globalCompositeOperation = "source-over";
+        ctx.font = "14px 黑体";
+        ctx.textAlign = "center";
+        if(data.onePumpPressure!=null&&typeof(data.onePumpPressure)!='undefined'){
+            if(data.onePumpPressureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/17,height/6+5,"供水压力：");
+            drawText(ctx,width/23,height/5+10,data.onePumpPressure+"Mp");
+        }
+        if(data.onePumpTemperature!=null&&typeof(data.onePumpTemperature)!='undefined'){
+            if(data.onePumpTemperatureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/7,height/6+5,"温度：");
+            drawText(ctx,width/8,height/5+10,data.onePumpTemperature+"°C");
+        }
+        if(data.onePumpFlow!=null&&typeof(data.onePumpFlow)!='undefined'){
+            if(data.onePumpFlowState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/4+20,height/20,"供水流量：");
+            drawText(ctx,width/4+16,height/14+10,data.onePumpFlow+"L/min");
+        }
+        //二次供水
+        if(data.twoPumpFlow!=null&&typeof(data.twoPumpFlow)!='undefined'){
+            if(data.twoPumpFlowState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/3*2-30,height/20,"供水流量：");
+            drawText(ctx,width/3*2-34,height/14+10,data.twoPumpFlow+"L/min");
+        }
+        if(data.twoPumpTemperature!=null&&typeof(data.twoPumpTemperature)!='undefined'){
+            if(data.twoPumpTemperatureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/4*3-25,height/20,"温度：");
+            drawText(ctx,width/4*3-29,height/14+10,data.twoPumpTemperature+"°C");
+        }
+        if(data.twoPumpPressure!=null&&typeof(data.twoPumpPressure)!='undefined'){
+            if(data.twoPumpPressureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/5*4,height/20,"供水压力：");
+            drawText(ctx,width/5*4-10,height/14+10,data.twoPumpPressure+"Mp");
+        }
+
+        //一次回水
+        if(data.oneBackTemperature!=null&&typeof(data.oneBackTemperature)!='undefined'){
+            if(data.oneBackTemperatureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/22,height/2-10,"温度：");
+            drawText(ctx,width/28,height/2+10,data.oneBackTemperature+"°C");
+        }
+        if(data.oneBackPressure!=null&&typeof(data.oneBackPressure)!='undefined'){
+            if(data.oneBackPressureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/9+20,height/2-10,"回水压力：");
+            drawText(ctx,width/10+20,height/2+10,data.oneBackPressure+"Mp");
+        }
+        if(data.oneBackFlow!=null&&typeof(data.oneBackFlow)!='undefined'){
+            if(data.oneBackFlowState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/4+20,height/2-10,"回水流量：");
+            drawText(ctx,width/4+16,height/2+10,data.oneBackFlow+"L/min");
+        }
+
+        //二次回水
+        if(data.twoBackFlow!=null&&typeof(data.twoBackFlow)!='undefined'){
+            if(data.woBackFlowState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/3*2-5,height/3-14,"回水流量：");
+            drawText(ctx,width/3*2-13,height/3+5,data.twoBackFlow+"L/min");
+        }
+        if(data.twoBackTemperature!=null&&typeof(data.twoBackTemperature)!='undefined'){
+            if(data.twoBackTemperatureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/8*7-30,height/3*2+10,"温度：");
+            drawText(ctx,width/8*7-34,height/3*2+30,data.twoBackTemperature+"°C");
+        }
+        if(data.twoBackPressure!=null&&typeof(data.twoBackPressure)!='undefined'){
+            if(data.twoBackPressureState){
+                ctx.fillStyle = "#FF5736";
+            }else{
+                ctx.fillStyle = "#000000";
+            }
+            drawText(ctx,width/12*11,height/3*2+10,"回水压力：");
+            drawText(ctx,width/12*11-4,height/3*2+30,data.twoBackPressure+"Mp");
+        }
+    }
+
+
+    draw(200, 0, 584, 370);
+
+</script>
+</body>
+</html>
